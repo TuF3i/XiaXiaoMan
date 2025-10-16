@@ -10,18 +10,6 @@ import (
 	"github.com/tencent-connect/botgo/dto"
 )
 
-type Processor struct{}
-
-// ProcessGroupMessage 回复群消息
-func (p *Processor) ProcessGroupMessage(input string, data *dto.WSGroupATMessageData) error {
-	msg := generateMessage(input, dto.Message(*data)) //生成群消息
-
-	if err := p.sendGroupReply(context.Background(), data.GroupID, msg); err != nil {
-		_ = p.sendGroupReply(context.Background(), data.GroupID, genErrMessage(dto.Message(*data), err))
-	}
-	return nil
-}
-
 func genErrMessage(data dto.Message, err error) *dto.MessageToCreate {
 	return &dto.MessageToCreate{
 		Timestamp: time.Now().UnixMilli(),
@@ -35,10 +23,10 @@ func genErrMessage(data dto.Message, err error) *dto.MessageToCreate {
 	}
 }
 
-func generateMessage(input string, data dto.Message) *dto.MessageToCreate {
+func generateMessage(content string, data dto.Message) *dto.MessageToCreate {
 	return &dto.MessageToCreate{
 		Timestamp: time.Now().UnixMilli(),
-		Content:   input,
+		Content:   content,
 		MessageReference: &dto.MessageReference{
 			// 引用这条消息
 			MessageID:             data.ID,

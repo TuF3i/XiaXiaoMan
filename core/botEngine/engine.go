@@ -6,10 +6,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tencent-connect/botgo"
+	"github.com/tencent-connect/botgo/dto"
+	"github.com/tencent-connect/botgo/dto/message"
+	"github.com/tencent-connect/botgo/event"
 	"github.com/tencent-connect/botgo/interaction/webhook"
 	"github.com/tencent-connect/botgo/token"
 )
@@ -28,6 +32,10 @@ func initEngine() {
 	engine := botgo.NewOpenAPI(core.Credentials.AppID, tokenSource).WithTimeout(5 * time.Second).SetDebug(core.Conf.EnableDebug)
 	core.Engine = engine
 
+	_ = event.RegisterHandlers(
+		GroupATMessageEventHandler(),
+	)
+
 	go func() {
 		r := gin.Default()
 		r.Any(core.Conf.CallBackPath, func(c *gin.Context) {
@@ -35,4 +43,10 @@ func initEngine() {
 		})
 		r.Run(fmt.Sprintf("%s:%s", core.Conf.ListenIPAddr, core.Conf.ListenPort))
 	}()
+}
+
+func GroupATMessageEventHandler() event.GroupATMessageEventHandler {
+	return func(event *dto.WSPayload, data *dto.WSGroupATMessageData) error {
+		return processor.ProcessGroupMessage(data)
+	}
 }

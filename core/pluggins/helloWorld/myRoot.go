@@ -7,3 +7,5 @@ type HelloWorld struct {
 type data struct {
 	testData string
 }
+
+type Processor struct{}
