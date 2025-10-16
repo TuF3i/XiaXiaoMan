@@ -1,0 +1,16 @@
+{
+  "comment_": "MySql Settins",
+  "MYSQLIPADDR": "192.168.31.252",
+  "MYSQLPORT": "3306",
+  "MYSQLUSER": "root",
+  "MYSQLPASSWD": "eeelcgkklo12l13l17gg",
+  "MYSQLDB": "XiaXiaoMan",
+
+  "comment_": "Gin Server Setting",
+  "ListenIPAddr": "0.0.0.0",
+  "ListenPort": "8080",
+  "CallBackPath": "/bot",
+
+  "comment_": "DebugModel",
+  "ENABLEDEBUG": true
+}
