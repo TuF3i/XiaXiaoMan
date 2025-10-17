@@ -13,7 +13,7 @@ import (
 func genErrMessage(data dto.Message, err error) *dto.MessageToCreate {
 	return &dto.MessageToCreate{
 		Timestamp: time.Now().UnixMilli(),
-		Content:   fmt.Sprintf("处理异常:%v", err),
+		Content:   fmt.Sprintf("Error:%v", err),
 		MessageReference: &dto.MessageReference{
 			// 引用这条消息
 			MessageID:             data.ID,

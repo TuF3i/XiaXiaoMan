@@ -17,7 +17,7 @@ type pluggin interface {
 	ReturnMetchCommand() string
 }
 
-func ProcessGroupMessage(data *dto.WSGroupATMessageData) {
+func ProcessGroupMessage(data *dto.WSGroupATMessageData) error {
 	raw := strings.ToLower(message.ETLInput(data.Content))
 	commandSlice := strings.SplitN(raw, " ", 2)
 	cmd := commandSlice[0]
@@ -27,4 +27,6 @@ func ProcessGroupMessage(data *dto.WSGroupATMessageData) {
 			p.ProcessEvent(data)
 		}
 	}
+
+	return nil
 }

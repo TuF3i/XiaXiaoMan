@@ -10,14 +10,9 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-func InitConfig() {
-	readAuth()
-	readConfig()
-}
-
-func readAuth() {
+func ReadAuth(AuthFilePath string) *token.QQBotCredentials {
 	//读取认证文件
-	auth, err := os.ReadFile(core.AuthFilePath)
+	auth, err := os.ReadFile(AuthFilePath)
 	if err != nil {
 		log.Fatalf("Read AuthFile Error: %v", err)
 		os.Exit(1)
@@ -36,15 +31,16 @@ func readAuth() {
 	}
 
 	log.Println("credentials:", credentials)
-	core.Credentials = credentials
+	//core.Credentials = credentials
+	return credentials
 }
 
-func readConfig() {
+func ReadConfig(ConfigFilePath string) core.Config {
 	//创建Config结构体
 	var conf core.Config
 
 	//读取Config文件
-	data, err := os.ReadFile(core.ConfigFilePath)
+	data, err := os.ReadFile(ConfigFilePath)
 	if err != nil {
 		log.Fatalf("Read Config File Error: %v", err)
 		os.Exit(1)
@@ -56,6 +52,6 @@ func readConfig() {
 		log.Fatalf("Unmarshal Error: %v", err)
 		os.Exit(1)
 	}
-
-	core.Conf = conf
+	//core.Conf = conf
+	return conf
 }

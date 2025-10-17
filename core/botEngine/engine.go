@@ -2,17 +2,16 @@ package botEngine
 
 import (
 	"XiaXiaoMan/core"
+	"XiaXiaoMan/core/pluggins"
 	"context"
 	"fmt"
 	"log"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/tencent-connect/botgo"
 	"github.com/tencent-connect/botgo/dto"
-	"github.com/tencent-connect/botgo/dto/message"
 	"github.com/tencent-connect/botgo/event"
 	"github.com/tencent-connect/botgo/interaction/webhook"
 	"github.com/tencent-connect/botgo/token"
@@ -47,6 +46,6 @@ func initEngine() {
 
 func GroupATMessageEventHandler() event.GroupATMessageEventHandler {
 	return func(event *dto.WSPayload, data *dto.WSGroupATMessageData) error {
-		return processor.ProcessGroupMessage(data)
+		return pluggins.ProcessGroupMessage(data)
 	}
 }

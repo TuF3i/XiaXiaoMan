@@ -12,5 +12,8 @@
   "CallBackPath": "/bot",
 
   "comment_": "DebugModel",
-  "ENABLEDEBUG": true
+  "ENABLEDEBUG": true,
+
+  "comment_": "LogFilePath",
+  "LOGPATH": "core/data/log"
 }

@@ -2,6 +2,7 @@ package helloWorld
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/tencent-connect/botgo/dto"
 )
@@ -9,7 +10,7 @@ import (
 var p Processor
 
 func (root *HelloWorld) ProcessEvent(data *dto.WSGroupATMessageData) error {
-	content := "Hello World!!!"
+	content := fmt.Sprintf("Hello World!!! [%v]", data.Author.Username)
 	msg := generateMessage(content, dto.Message(*data)) //生成群消息
 
 	if err := p.sendGroupReply(context.Background(), data.GroupID, msg); err != nil {

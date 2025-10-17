@@ -1,8 +1,11 @@
 package core
 
 import (
+	"XiaXiaoMan/core/utils/llog"
+
 	"github.com/tencent-connect/botgo/openapi"
 	"github.com/tencent-connect/botgo/token"
+	"gorm.io/gorm"
 )
 
 var (
@@ -12,6 +15,10 @@ var (
 	Credentials *token.QQBotCredentials
 	Conf        Config
 	Engine      openapi.OpenAPI
+	DB          *gorm.DB
+	Logger      *llog.Log
+
+	ToDay string
 )
 
 type Config struct {
@@ -24,4 +31,5 @@ type Config struct {
 	ListenIPAddr string `json:"ListenIPAddr"`
 	ListenPort   string `json:"ListenPort"`
 	CallBackPath string `json:"CallBackPath"`
+	LogFilePath  string `json:"LOGPATH"`
 }
