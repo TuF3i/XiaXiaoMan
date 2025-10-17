@@ -10,6 +10,10 @@ import (
 	"gitee.com/liumou_site/logger"
 )
 
+type flogfunc func(*log.Logger)
+
+type clogfunc func(*logger.LocalLogger)
+
 type Log struct {
 	LogPath  string
 	LogLevel string
@@ -18,16 +22,16 @@ type Log struct {
 	ToDay    string
 }
 
-func (l *Log) fileLog() *log.Logger {
+func (l *Log) fileLog(f flogfunc) {
 	logFile := l.fileIO()
 	defer logFile.Close()
 
 	l.FLog.SetOutput(logFile)
-	return l.FLog
+	f(l.FLog)
 }
 
-func (l *Log) consoleLog() *logger.LocalLogger {
-	return l.CLog
+func (l *Log) consoleLog(f clogfunc) {
+	f(l.CLog)
 }
 
 func (l *Log) fileIO() *os.File {
@@ -35,6 +39,7 @@ func (l *Log) fileIO() *os.File {
 	if date != l.ToDay {
 		l.ToDay = date
 	}
+
 	logFile, _ := os.OpenFile(fmt.Sprintf("%s/%s.log", l.LogPath, l.ToDay),
 		os.O_CREATE|os.O_WRONLY|os.O_APPEND,
 		0666)
@@ -43,21 +48,41 @@ func (l *Log) fileIO() *os.File {
 }
 
 func (l *Log) BotINFO(info_ string) {
+	l.fileLog(func(l *log.Logger) {
+		l.Printf(fmt.Sprintf("[INFO] %v", info_))
+	})
 
+	l.consoleLog(func(l *logger.LocalLogger) {
+		l.Info(info_)
+	})
 }
 
 func (l *Log) BotDEBUG(debug_ string) {
+	l.fileLog(func(l *log.Logger) {
+		l.Printf(fmt.Sprintf("[DEBUG] %v\n", debug_))
+	})
 
+	l.consoleLog(func(l *logger.LocalLogger) {
+		l.Debug(debug_)
+	})
 }
 
 func (l *Log) BotWarning(warning_ string) {
+	l.fileLog(func(l *log.Logger) {
+		l.Printf(fmt.Sprintf("[WARNING] %v\n", warning_))
+	})
 
+	l.consoleLog(func(l *logger.LocalLogger) {
+		l.Warn(warning_)
+	})
 }
 
 func (l *Log) BotPANIC(panic_ string) {
+	l.fileLog(func(l *log.Logger) {
+		l.Printf(fmt.Sprintf("[PANIC] %v\n"))
+	})
 
-}
-
-func (l *Log) output(s string) string {
-
+	l.consoleLog(func(l *logger.LocalLogger) {
+		l.Panic(panic_)
+	})
 }

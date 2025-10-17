@@ -11,7 +11,7 @@ import (
 
 func InitLogger() {
 	flog := log.Logger{}
-	flog.SetFlags(log.Llongfile | log.Lmicroseconds | log.Ldate)
+	flog.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
 	flog.SetPrefix("[FileLog]")
 
 	clog := logger.NewLogger(1)
