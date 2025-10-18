@@ -49,6 +49,7 @@ func (l *Log) fileIO() *os.File {
 }
 
 func (l *Log) BotINFO(info_ string) {
+
 	l.fileLog(func(l *log.Logger) {
 		l.Printf(fmt.Sprintf("[INFO] %v", info_))
 	})
@@ -59,6 +60,7 @@ func (l *Log) BotINFO(info_ string) {
 }
 
 func (l *Log) BotDEBUG(debug_ string) {
+
 	l.fileLog(func(l *log.Logger) {
 		l.Printf(fmt.Sprintf("[DEBUG] %v\n", debug_))
 	})
@@ -69,6 +71,7 @@ func (l *Log) BotDEBUG(debug_ string) {
 }
 
 func (l *Log) BotWarning(warning_ string) {
+
 	l.fileLog(func(l *log.Logger) {
 		l.Printf(fmt.Sprintf("[WARNING] %v\n", warning_))
 	})
@@ -78,7 +81,8 @@ func (l *Log) BotWarning(warning_ string) {
 	})
 }
 
-func (l *Log) BotPANIC(error_ string) {
+func (l *Log) BotError(error_ string) {
+
 	l.fileLog(func(l *log.Logger) {
 		l.Printf(fmt.Sprintf("[ERROR] %v\n", error_))
 	})

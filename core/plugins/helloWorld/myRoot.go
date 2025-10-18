@@ -1,6 +1,7 @@
 package helloWorld
 
-type HelloWorld struct {
+type Body struct {
+	PluginName   string
 	MatchCommand string
 }
 

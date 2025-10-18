@@ -19,6 +19,8 @@ var (
 	Logger      *llog.Log
 
 	ToDay string
+
+	Blank string = ""
 )
 
 type Config struct {

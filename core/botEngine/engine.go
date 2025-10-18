@@ -2,7 +2,7 @@ package botEngine
 
 import (
 	"XiaXiaoMan/core"
-	"XiaXiaoMan/core/pluggins"
+	"XiaXiaoMan/core/plugins"
 	"context"
 	"fmt"
 	"log"
@@ -17,7 +17,7 @@ import (
 	"github.com/tencent-connect/botgo/token"
 )
 
-func initEngine() {
+func InitEngine() {
 	tokenSource := token.NewQQBotTokenSource(core.Credentials)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -46,6 +46,6 @@ func initEngine() {
 
 func GroupATMessageEventHandler() event.GroupATMessageEventHandler {
 	return func(event *dto.WSPayload, data *dto.WSGroupATMessageData) error {
-		return pluggins.ProcessGroupMessage(data)
+		return plugins.ProcessGroupMessage(data)
 	}
 }

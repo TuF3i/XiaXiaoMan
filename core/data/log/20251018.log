@@ -9,3 +9,24 @@
 [FileLog] 2025/10/18 20:48:05 llog.go:83: [PANIC] %!!(MISSING)v(MISSING)
 [FileLog] 2025/10/18 20:49:29 llog.go:53: [INFO] 114514
 [FileLog] 2025/10/18 20:49:29 llog.go:83: [ERROR] good
+[FileLog] 2025/10/18 21:39:00 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:39:00 llog.go:67: [DEBUG] Init the pluggin [ [HelloWorld] ]
+[FileLog] 2025/10/18 21:41:00 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:41:00 llog.go:67: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:41:06 llog.go:55: [INFO] Bot Exited, Bye!%!!(MISSING)(EXTRA []interface {}=[])
+[FileLog] 2025/10/18 21:41:48 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:41:48 llog.go:67: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:41:54 llog.go:55: [INFO] Bot Exited, Bye!%!!(MISSING)(EXTRA []interface {}=[])
+[FileLog] 2025/10/18 21:42:17 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:42:17 llog.go:67: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:42:19 llog.go:55: [INFO] Bot Exited, Bye!%!!(MISSING)(EXTRA []interface {}=[<nil>])
+[FileLog] 2025/10/18 21:42:35 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:42:35 llog.go:67: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:42:37 llog.go:55: [INFO] Bot Exited, Bye!%!!(MISSING)(EXTRA []interface {}=[ ])
+[FileLog] 2025/10/18 21:44:05 llog.go:55: [INFO] Init Ali [Qwen]
+[FileLog] 2025/10/18 21:44:05 llog.go:67: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:44:08 llog.go:55: [INFO] Bot Exited, Bye!%!!(MISSING)(EXTRA []interface {}=[])
+[FileLog] 2025/10/18 21:55:17 llog.go:54: [INFO] Init Ali Qwen
+[FileLog] 2025/10/18 21:55:17 llog.go:65: [DEBUG] Init the pluggin HelloWorld
+[FileLog] 2025/10/18 21:55:17 llog.go:65: [DEBUG] Init the pluggin [HelloWorld]
+[FileLog] 2025/10/18 21:55:31 llog.go:54: [INFO] Bot Exited, Bye!
