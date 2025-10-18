@@ -36,6 +36,7 @@ func (l *Log) consoleLog(f clogfunc) {
 
 func (l *Log) fileIO() *os.File {
 	date := time.Now().Format("20060102")
+
 	if date != l.ToDay {
 		l.ToDay = date
 	}
@@ -77,12 +78,12 @@ func (l *Log) BotWarning(warning_ string) {
 	})
 }
 
-func (l *Log) BotPANIC(panic_ string) {
+func (l *Log) BotPANIC(error_ string) {
 	l.fileLog(func(l *log.Logger) {
-		l.Printf(fmt.Sprintf("[PANIC] %v\n"))
+		l.Printf(fmt.Sprintf("[ERROR] %v\n", error_))
 	})
 
 	l.consoleLog(func(l *logger.LocalLogger) {
-		l.Panic(panic_)
+		l.Error(error_)
 	})
 }

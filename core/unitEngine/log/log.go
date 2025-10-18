@@ -12,7 +12,7 @@ import (
 func InitLogger() {
 	flog := log.Logger{}
 	flog.SetFlags(log.Ldate | log.Ltime | log.Lshortfile)
-	flog.SetPrefix("[FileLog]")
+	flog.SetPrefix("[FileLog] ")
 
 	clog := logger.NewLogger(1)
 

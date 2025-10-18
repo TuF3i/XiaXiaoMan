@@ -1,0 +1,11 @@
+[FileLog] 2025/10/18 20:44:06 llog.go:53: [INFO] Test
+[FileLog] 2025/10/18 20:45:25 llog.go:53: [INFO] 114514
+[FileLog] 2025/10/18 20:45:25 llog.go:53: [INFO] good
+[FileLog] 2025/10/18 20:46:14 llog.go:53: [INFO] 114514
+[FileLog] 2025/10/18 20:46:14 llog.go:73: [WARNING] good
+[FileLog] 2025/10/18 20:46:28 llog.go:53: [INFO] 114514
+[FileLog] 2025/10/18 20:46:28 llog.go:83: [PANIC] %!!(MISSING)v(MISSING)
+[FileLog] 2025/10/18 20:48:05 llog.go:53: [INFO] 114514
+[FileLog] 2025/10/18 20:48:05 llog.go:83: [PANIC] %!!(MISSING)v(MISSING)
+[FileLog] 2025/10/18 20:49:29 llog.go:53: [INFO] 114514
+[FileLog] 2025/10/18 20:49:29 llog.go:83: [ERROR] good
