@@ -47,6 +47,18 @@ func (c *BotEngine) readLoop() {
 	}
 }
 
-func (c *BotEngine) closeWS() error {
+func (c *BotEngine) Close() error {
+	c.closeChan <- struct{}{}
 	return c.conn.Close()
+}
+
+func (c *BotEngine) Spin() error {
+	// 创建ws连接
+	if err := c.connectWS(); err != nil {
+		return err
+	}
+	// 启动事件监听循环
+	c.readLoop()
+	// 阻塞
+	return nil
 }

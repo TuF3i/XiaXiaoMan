@@ -19,6 +19,13 @@ type BotEngine struct {
 	closeChan    chan struct{}
 }
 
-func SetupBotEngine(conf *config.Config) (*BotEngine, error) {
-
+func SetupBotEngine(conf *config.Config) *BotEngine {
+	return &BotEngine{
+		conf:         conf,
+		uuid:         uuid.New(),
+		mu:           sync.Mutex{},
+		pendingCalls: make(map[string]chan *onebot.APIResponse),
+		eventChan:    make(chan interface{}),
+		closeChan:    make(chan struct{}),
+	}
 }
