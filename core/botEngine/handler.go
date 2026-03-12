@@ -196,6 +196,8 @@ func (c *BotEngine) SendRequest(action string, params interface{}) (*onebot.APIR
 		delete(c.pendingCalls, echo)
 		c.mu.Unlock()
 		return nil, fmt.Errorf("请求超时")
+	case <-c.closeChan:
+		return nil, fmt.Errorf("连接已关闭")
 	}
 }
 

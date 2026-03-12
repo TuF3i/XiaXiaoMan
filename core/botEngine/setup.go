@@ -18,6 +18,7 @@ type BotEngine struct {
 	mu           sync.Mutex
 	pendingCalls map[string]chan *onebot.APIResponse
 	eventChan    chan interface{}
+	closeChan    chan struct{}
 }
 
 func SetupBotEngine(conf *config.Config) (*BotEngine, error) {

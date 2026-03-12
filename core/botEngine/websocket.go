@@ -1,7 +1,6 @@
 package botEngine
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -28,16 +27,16 @@ func (c *BotEngine) connectWS() error {
 	return nil
 }
 
-func (c *BotEngine) readLoop(ctx context.Context) {
+func (c *BotEngine) readLoop() {
 	for {
 		select {
-		case <-ctx.Done():
+		case <-c.closeChan:
 			return
 		default:
 			_, message, err := c.conn.ReadMessage()
 			if err != nil {
 				select {
-				case <-ctx.Done():
+				case <-c.closeChan:
 				default:
 					fmt.Printf("Read Message Error: %v\n", err)
 				}
