@@ -9,8 +9,6 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-const heartBeatInterval = 15
-
 type BotEngine struct {
 	conf         *config.Config
 	conn         *websocket.Conn
