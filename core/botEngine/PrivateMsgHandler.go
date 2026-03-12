@@ -1,7 +1,6 @@
-package eventHandler
+package botEngine
 
 import (
-	"XiaXiaoMan/core/botEngine"
 	"XiaXiaoMan/core/models/onebot"
 	"encoding/json"
 	"fmt"
@@ -10,7 +9,7 @@ import (
 )
 
 // SendPrivateMessage 发送私聊消息
-func SendPrivateMessage(c *botEngine.BotEngine, userID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
+func (c *BotEngine) SendPrivateMessage(userID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
 	// 构造请求
 	req := onebot.SendPrivateMsgRequest{
 		UserID:     userID,
@@ -33,7 +32,7 @@ func SendPrivateMessage(c *botEngine.BotEngine, userID int64, message interface{
 }
 
 // SendPrivateTextMessage 发送私聊纯文本消息
-func SendPrivateTextMessage(c *botEngine.BotEngine, userID int64, message string) (messageID int64, err error) {
+func (c *BotEngine) SendPrivateTextMessage(userID int64, message string) (messageID int64, err error) {
 	msg := []onebot.MessageSegment{
 		{
 			Type: "text",
@@ -42,11 +41,11 @@ func SendPrivateTextMessage(c *botEngine.BotEngine, userID int64, message string
 			},
 		},
 	}
-	return SendPrivateMessage(c, userID, msg, false)
+	return c.SendPrivateMessage(userID, msg, false)
 }
 
 // SendPrivateForwardMessage 发送私聊合并转发消息
-func SendPrivateForwardMessage(c *botEngine.BotEngine, userID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
+func (c *BotEngine) SendPrivateForwardMessage(userID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
 	// 构造请求
 	req := onebot.SendPrivateForwardMsgRequest{
 		UserID:   userID,
@@ -64,7 +63,7 @@ func SendPrivateForwardMessage(c *botEngine.BotEngine, userID int64, messages []
 }
 
 // GetFriendMsgHistory 获取私聊的聊天记录
-func GetFriendMsgHistory(c *botEngine.BotEngine, userID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
+func (c *BotEngine) GetFriendMsgHistory(userID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
 	req := onebot.GetFriendMsgHistoryRequest{
 		UserID:     userID,
 		MessageID:  messageID,

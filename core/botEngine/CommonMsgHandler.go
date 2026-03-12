@@ -1,7 +1,6 @@
-package eventHandler
+package botEngine
 
 import (
-	"XiaXiaoMan/core/botEngine"
 	"XiaXiaoMan/core/models/onebot"
 	"encoding/json"
 
@@ -9,7 +8,7 @@ import (
 )
 
 // GetMsg 获取消息内容
-func GetMsg(c *botEngine.BotEngine, messageID int64) (message *onebot.MessageInfo, err error) {
+func (c *BotEngine) GetMsg(messageID int64) (message *onebot.MessageInfo, err error) {
 	req := onebot.GetMsgRequest{
 		MessageID: messageID,
 	}
@@ -26,7 +25,7 @@ func GetMsg(c *botEngine.BotEngine, messageID int64) (message *onebot.MessageInf
 }
 
 // DeleteMsg 撤回消息
-func DeleteMsg(c *botEngine.BotEngine, messageID int64) (err error) {
+func (c *BotEngine) DeleteMsg(messageID int64) (err error) {
 	req := onebot.DeleteMsgRequest{
 		MessageID: messageID,
 	}

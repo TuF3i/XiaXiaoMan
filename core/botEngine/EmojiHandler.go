@@ -1,12 +1,11 @@
-package eventHandler
+package botEngine
 
 import (
-	"XiaXiaoMan/core/botEngine"
 	"XiaXiaoMan/core/models/onebot"
 )
 
 // SetMsgEmojiLike 给消息添加表情
-func SetMsgEmojiLike(c *botEngine.BotEngine, messageID int64, emojiID int) (err error) {
+func (c *BotEngine) SetMsgEmojiLike(messageID int64, emojiID int) (err error) {
 	req := onebot.SetMsgEmojiLikeRequest{
 		MessageID: messageID,
 		EmojiID:   emojiID,

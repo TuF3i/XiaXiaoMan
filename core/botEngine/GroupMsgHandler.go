@@ -1,7 +1,6 @@
-package eventHandler
+package botEngine
 
 import (
-	"XiaXiaoMan/core/botEngine"
 	"XiaXiaoMan/core/models/onebot"
 	"encoding/json"
 
@@ -9,7 +8,7 @@ import (
 )
 
 // SendGroupMessage 发送群聊消息
-func SendGroupMessage(c *botEngine.BotEngine, groupID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
+func (c *BotEngine) SendGroupMessage(groupID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
 	req := onebot.SendGroupMsgRequest{
 		GroupID:    groupID,
 		Message:    message,
@@ -28,7 +27,7 @@ func SendGroupMessage(c *botEngine.BotEngine, groupID int64, message interface{}
 }
 
 // SendGroupTextMessage 发送群文本消息
-func SendGroupTextMessage(c *botEngine.BotEngine, groupID int64, message string) (messageID int64, err error) {
+func (c *BotEngine) SendGroupTextMessage(groupID int64, message string) (messageID int64, err error) {
 	msg := []onebot.MessageSegment{
 		{
 			Type: "text",
@@ -37,11 +36,11 @@ func SendGroupTextMessage(c *botEngine.BotEngine, groupID int64, message string)
 			},
 		},
 	}
-	return SendGroupMessage(c, groupID, msg, false)
+	return c.SendGroupMessage(groupID, msg, false)
 }
 
 // SendGroupForwardMsg 发送群聊合并转发消息
-func SendGroupForwardMsg(c *botEngine.BotEngine, groupID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
+func (c *BotEngine) SendGroupForwardMsg(groupID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
 	req := onebot.SendGroupForwardMsgRequest{
 		GroupID:  groupID,
 		Messages: messages,
@@ -57,7 +56,7 @@ func SendGroupForwardMsg(c *botEngine.BotEngine, groupID int64, messages []onebo
 }
 
 // GetGroupMsgHistory 获取群聊历史记录
-func GetGroupMsgHistory(c *botEngine.BotEngine, groupID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
+func (c *BotEngine) GetGroupMsgHistory(groupID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
 	req := onebot.GetGroupMsgHistoryRequest{
 		GroupID:    groupID,
 		MessageID:  messageID,

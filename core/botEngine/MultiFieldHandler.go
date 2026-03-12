@@ -1,14 +1,13 @@
-package eventHandler
+package botEngine
 
 import (
-	"XiaXiaoMan/core/botEngine"
 	"XiaXiaoMan/core/models/onebot"
 
 	"github.com/bytedance/sonic"
 )
 
 // GetFile 获取文件内容
-func GetFile(c *botEngine.BotEngine, fileID string) (fileData *onebot.FileInfo, err error) {
+func (c *BotEngine) GetFile(fileID string) (fileData *onebot.FileInfo, err error) {
 	req := onebot.GetFileRequest{
 		FileID: fileID,
 	}
@@ -25,7 +24,7 @@ func GetFile(c *botEngine.BotEngine, fileID string) (fileData *onebot.FileInfo, 
 }
 
 // GetImage 获取图片内容
-func GetImage(c *botEngine.BotEngine, file string) (imageData *onebot.ImageInfo, err error) {
+func (c *BotEngine) GetImage(file string) (imageData *onebot.ImageInfo, err error) {
 	req := onebot.GetImageRequest{
 		File: file,
 	}
@@ -42,7 +41,7 @@ func GetImage(c *botEngine.BotEngine, file string) (imageData *onebot.ImageInfo,
 }
 
 // VoiceMsgToText 语言转文字
-func VoiceMsgToText(c *botEngine.BotEngine, messageID int64, voice string) (text *onebot.VoiceToText, err error) {
+func (c *BotEngine) VoiceMsgToText(messageID int64, voice string) (text *onebot.VoiceToText, err error) {
 	req := onebot.VoiceMsgToTextRequest{
 		MessageID: messageID,
 		Voice:     voice,
