@@ -37,6 +37,9 @@ func SetupBotEngine(conf *config.Config) *BotEngine {
 
 func (c *BotEngine) Close() error {
 	close(c.closeChan)
+
+	close(c.eventChan)
+
 	return c.conn.Close()
 }
 
@@ -45,6 +48,8 @@ func (c *BotEngine) Spin() error {
 	if err := c.connectWS(); err != nil {
 		return err
 	}
+	// 启动事件分类器
+	go c.eventListener()
 	// 启动事件监听循环
 	c.readLoop()
 	// 阻塞
