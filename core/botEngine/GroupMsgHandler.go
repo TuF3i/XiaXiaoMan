@@ -8,13 +8,13 @@ import (
 )
 
 // SendGroupMessage 发送群聊消息
-func (c *BotEngine) SendGroupMessage(groupID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
+func (r *RequestContext) SendGroupMessage(groupID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
 	req := onebot.SendGroupMsgRequest{
 		GroupID:    groupID,
 		Message:    message,
 		AutoEscape: autoEscape,
 	}
-	resp, err := c.SendRequest("send_group_msg", req)
+	resp, err := r.c.sendRequest("send_group_msg", req)
 	if err != nil {
 		return 0, err
 	}
@@ -27,7 +27,7 @@ func (c *BotEngine) SendGroupMessage(groupID int64, message interface{}, autoEsc
 }
 
 // SendGroupTextMessage 发送群文本消息
-func (c *BotEngine) SendGroupTextMessage(groupID int64, message string) (messageID int64, err error) {
+func (r *RequestContext) SendGroupTextMessage(groupID int64, message string) (messageID int64, err error) {
 	msg := []onebot.MessageSegment{
 		{
 			Type: "text",
@@ -36,16 +36,16 @@ func (c *BotEngine) SendGroupTextMessage(groupID int64, message string) (message
 			},
 		},
 	}
-	return c.SendGroupMessage(groupID, msg, false)
+	return r.SendGroupMessage(groupID, msg, false)
 }
 
 // SendGroupForwardMsg 发送群聊合并转发消息
-func (c *BotEngine) SendGroupForwardMsg(groupID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
+func (r *RequestContext) SendGroupForwardMsg(groupID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
 	req := onebot.SendGroupForwardMsgRequest{
 		GroupID:  groupID,
 		Messages: messages,
 	}
-	resp, err := c.SendRequest("send_group_forward_msg", req)
+	resp, err := r.c.sendRequest("send_group_forward_msg", req)
 	if err != nil {
 		return "", err
 	}
@@ -56,14 +56,14 @@ func (c *BotEngine) SendGroupForwardMsg(groupID int64, messages []onebot.Forward
 }
 
 // GetGroupMsgHistory 获取群聊历史记录
-func (c *BotEngine) GetGroupMsgHistory(groupID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
+func (r *RequestContext) GetGroupMsgHistory(groupID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
 	req := onebot.GetGroupMsgHistoryRequest{
 		GroupID:    groupID,
 		MessageID:  messageID,
 		Count:      count,
 		MessageSeq: messageSeq,
 	}
-	resp, err := c.SendRequest("get_group_msg_history", req)
+	resp, err := r.c.sendRequest("get_group_msg_history", req)
 	if err != nil {
 		return nil, err
 	}

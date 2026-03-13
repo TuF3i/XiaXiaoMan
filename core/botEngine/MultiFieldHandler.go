@@ -7,11 +7,11 @@ import (
 )
 
 // GetFile 获取文件内容
-func (c *BotEngine) GetFile(fileID string) (fileData *onebot.FileInfo, err error) {
+func (r *RequestContext) GetFile(fileID string) (fileData *onebot.FileInfo, err error) {
 	req := onebot.GetFileRequest{
 		FileID: fileID,
 	}
-	resp, err := c.SendRequest("get_file", req)
+	resp, err := r.c.sendRequest("get_file", req)
 	if err != nil {
 		return nil, err
 	}
@@ -24,11 +24,11 @@ func (c *BotEngine) GetFile(fileID string) (fileData *onebot.FileInfo, err error
 }
 
 // GetImage 获取图片内容
-func (c *BotEngine) GetImage(file string) (imageData *onebot.ImageInfo, err error) {
+func (r *RequestContext) GetImage(file string) (imageData *onebot.ImageInfo, err error) {
 	req := onebot.GetImageRequest{
 		File: file,
 	}
-	resp, err := c.SendRequest("get_image", req)
+	resp, err := r.c.sendRequest("get_image", req)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +41,12 @@ func (c *BotEngine) GetImage(file string) (imageData *onebot.ImageInfo, err erro
 }
 
 // VoiceMsgToText 语言转文字
-func (c *BotEngine) VoiceMsgToText(messageID int64, voice string) (text *onebot.VoiceToText, err error) {
+func (r *RequestContext) VoiceMsgToText(messageID int64, voice string) (text *onebot.VoiceToText, err error) {
 	req := onebot.VoiceMsgToTextRequest{
 		MessageID: messageID,
 		Voice:     voice,
 	}
-	resp, err := c.SendRequest("voice_msg_to_text", req)
+	resp, err := r.c.sendRequest("voice_msg_to_text", req)
 	if err != nil {
 		return nil, err
 	}

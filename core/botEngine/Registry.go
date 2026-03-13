@@ -1,32 +1,35 @@
 package botEngine
 
-import "context"
-
-const (
-	PrivateMessageEvent = "event.message.private" // 私聊消息事件
-	GroupMessageEvent   = "event.message.group"   // 群聊消息事件
-
-	GroupFileUploadEvent = "event.notice.group.upload "  // 群文件上传事件
-	GroupAdminEvent      = "event.notice.group.admin"    // 群管理员变动事件
-	GroupDecreaseEvent   = "event.notice.group.decrease" // 群成员减少事件
-	GroupIncreaseEvent   = "event.notice.group.increase" // 群成员增加事件
-	GroupBanEvent        = "event.notice.group.ban"      // 群成员禁言事件
-	GroupRecallEvent     = "event.notice.group.recall"   // 群消息撤回事件
-	GroupCardEvent       = "event.notice.group.card"     // 群名片变更事件
-	FriendAddEvent       = "event.notice.friend.add"     // 好友添加事件
-	FriendRecallEvent    = "event.notice.friend.recall"  // 好友消息撤回事件
-	NotifyEvent          = "event.notice.notify"         // 特殊通知事件（如戳一戳、红包王等）
-	OfflineFileEvent     = "event.notice.file.offline"   // 离线文件事件
-	EssenceEvent         = "event.notice.essence"        // 群精华消息事件
-
-	FriendEvent = "event.request.friend" // 好友请求事件
-	GroupEvent  = "event.request.group"  // 群请求事件
-
-	LifecycleMetaEvent = "event.meta.lifecycle" // 生命周期事件
-	Heartbeat          = "event.meta.heartbeat" // 心跳事件
+import (
+	"XiaXiaoMan/core/models/onebot"
+	"context"
 )
 
-type HandleFunc func(ctx context.Context, c *BotEngine)
+type HandleFunc func(ctx context.Context, c *RequestContext)
+
+func (r *RequestContext) GetRequestContext() interface{} {
+	return r.requestContext
+}
+
+func (r *RequestContext) GetPrivateMessageEvent() onebot.PrivateMessageEvent {
+	return r.requestContext.(onebot.PrivateMessageEvent)
+}
+
+func (r *RequestContext) GetGroupMessageEvent() onebot.GroupMessageEvent {
+	return r.requestContext.(onebot.GroupMessageEvent)
+}
+
+func (r *RequestContext) GetFriendAddNoticeEvent() onebot.FriendAddNoticeEvent {
+	return r.requestContext.(onebot.FriendAddNoticeEvent)
+}
+
+func (r *RequestContext) GetGroupIncreaseNoticeEvent() onebot.GroupIncreaseNoticeEvent {
+	return r.requestContext.(onebot.GroupIncreaseNoticeEvent)
+}
+
+func (r *RequestContext) GetGroupDecreaseNoticeEvent() onebot.GroupDecreaseNoticeEvent {
+	return r.requestContext.(onebot.GroupDecreaseNoticeEvent)
+}
 
 func (c *BotEngine) RegisterEventHandlerFunc(eventType string, handlerFunc HandleFunc) {
 	c.handlerFunc[eventType] = handlerFunc

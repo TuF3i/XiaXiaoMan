@@ -9,7 +9,7 @@ import (
 )
 
 // SendPrivateMessage 发送私聊消息
-func (c *BotEngine) SendPrivateMessage(userID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
+func (r *RequestContext) SendPrivateMessage(userID int64, message interface{}, autoEscape bool) (messageID int64, err error) {
 	// 构造请求
 	req := onebot.SendPrivateMsgRequest{
 		UserID:     userID,
@@ -17,7 +17,7 @@ func (c *BotEngine) SendPrivateMessage(userID int64, message interface{}, autoEs
 		AutoEscape: autoEscape,
 	}
 	// 向LLBot发起调用
-	resp, err := c.SendRequest("send_private_msg", req)
+	resp, err := r.c.sendRequest("send_private_msg", req)
 	if err != nil {
 		return 0, err
 	}
@@ -32,7 +32,7 @@ func (c *BotEngine) SendPrivateMessage(userID int64, message interface{}, autoEs
 }
 
 // SendPrivateTextMessage 发送私聊纯文本消息
-func (c *BotEngine) SendPrivateTextMessage(userID int64, message string) (messageID int64, err error) {
+func (r *RequestContext) SendPrivateTextMessage(userID int64, message string) (messageID int64, err error) {
 	msg := []onebot.MessageSegment{
 		{
 			Type: "text",
@@ -41,18 +41,18 @@ func (c *BotEngine) SendPrivateTextMessage(userID int64, message string) (messag
 			},
 		},
 	}
-	return c.SendPrivateMessage(userID, msg, false)
+	return r.SendPrivateMessage(userID, msg, false)
 }
 
 // SendPrivateForwardMessage 发送私聊合并转发消息
-func (c *BotEngine) SendPrivateForwardMessage(userID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
+func (r *RequestContext) SendPrivateForwardMessage(userID int64, messages []onebot.ForwardMessageNode) (forwardID string, err error) {
 	// 构造请求
 	req := onebot.SendPrivateForwardMsgRequest{
 		UserID:   userID,
 		Messages: messages,
 	}
 	// 发起调用
-	resp, err := c.SendRequest("send_private_forward_msg", req)
+	resp, err := r.c.sendRequest("send_private_forward_msg", req)
 	if err != nil {
 		return "", err
 	}
@@ -63,14 +63,14 @@ func (c *BotEngine) SendPrivateForwardMessage(userID int64, messages []onebot.Fo
 }
 
 // GetFriendMsgHistory 获取私聊的聊天记录
-func (c *BotEngine) GetFriendMsgHistory(userID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
+func (r *RequestContext) GetFriendMsgHistory(userID int64, messageID int64, count int, messageSeq int64) (histories *onebot.MsgHistory, err error) {
 	req := onebot.GetFriendMsgHistoryRequest{
 		UserID:     userID,
 		MessageID:  messageID,
 		Count:      count,
 		MessageSeq: messageSeq,
 	}
-	resp, err := c.SendRequest("get_friend_msg_history", req)
+	resp, err := r.c.sendRequest("get_friend_msg_history", req)
 	if err != nil {
 		return nil, err
 	}

@@ -6,40 +6,16 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 )
 
-type BotEngine struct {
-	conf         *config.Config
-	conn         *websocket.Conn
-	uuid         uuid.UUID
-	mu           sync.Mutex
-	pendingCalls map[string]chan *onebot.APIResponse
-	eventChan    chan interface{}
-	closeChan    chan struct{}
-
-	handlerFunc map[string]HandleFunc
-}
-
-func SetupBotEngine(conf *config.Config) *BotEngine {
-	engine := &BotEngine{
-		conf:         conf,
-		uuid:         uuid.New(),
-		mu:           sync.Mutex{},
-		pendingCalls: make(map[string]chan *onebot.APIResponse),
-		eventChan:    make(chan interface{}),
-		closeChan:    make(chan struct{}),
-		handlerFunc:  make(map[string]HandleFunc),
-	}
-
-	return engine
-}
-
 func (c *BotEngine) Close() error {
+	// 发送关闭广播
 	close(c.closeChan)
-
+	// 等待监听器关闭
+	c.wg.Wait()
+	// 关闭事件管道
 	close(c.eventChan)
-
+	// 关闭ws
 	return c.conn.Close()
 }
 
@@ -48,10 +24,26 @@ func (c *BotEngine) Spin() error {
 	if err := c.connectWS(); err != nil {
 		return err
 	}
-	// 启动事件分类器
-	go c.eventListener()
-	// 启动事件监听循环
-	c.readLoop()
-	// 阻塞
+	// 启动LLBot事件监听器
+	go c.llBotEventListener()
+	// 启动本地事件监听循环
+	go c.localEventListener()
+
 	return nil
+}
+
+func SetupBotEngine(conf *config.Config) *BotEngine {
+	engine := &BotEngine{
+		conf: conf,
+		uuid: uuid.New(),
+		mu:   sync.Mutex{},
+		wg:   sync.WaitGroup{},
+
+		pendingCalls: make(map[string]chan *onebot.APIResponse),
+		eventChan:    make(chan interface{}),
+		closeChan:    make(chan struct{}),
+		handlerFunc:  make(map[string]HandleFunc),
+	}
+
+	return engine
 }

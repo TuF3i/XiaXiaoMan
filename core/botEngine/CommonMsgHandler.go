@@ -8,11 +8,11 @@ import (
 )
 
 // GetMsg 获取消息内容
-func (c *BotEngine) GetMsg(messageID int64) (message *onebot.MessageInfo, err error) {
+func (r *RequestContext) GetMsg(messageID int64) (message *onebot.MessageInfo, err error) {
 	req := onebot.GetMsgRequest{
 		MessageID: messageID,
 	}
-	resp, err := c.SendRequest("get_msg", req)
+	resp, err := r.c.sendRequest("get_msg", req)
 	if err != nil {
 		return nil, err
 	}
@@ -25,10 +25,10 @@ func (c *BotEngine) GetMsg(messageID int64) (message *onebot.MessageInfo, err er
 }
 
 // DeleteMsg 撤回消息
-func (c *BotEngine) DeleteMsg(messageID int64) (err error) {
+func (r *RequestContext) DeleteMsg(messageID int64) (err error) {
 	req := onebot.DeleteMsgRequest{
 		MessageID: messageID,
 	}
-	_, err = c.SendRequest("delete_msg", req)
+	_, err = r.c.sendRequest("delete_msg", req)
 	return err
 }

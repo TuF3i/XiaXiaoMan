@@ -32,7 +32,9 @@ func (c *BotEngine) connectWS() error {
 	return nil
 }
 
-func (c *BotEngine) readLoop() {
+func (c *BotEngine) llBotEventListener() {
+	c.wg.Add(1)
+	defer c.wg.Done()
 	for {
 		select {
 		case <-c.closeChan:
@@ -48,6 +50,50 @@ func (c *BotEngine) readLoop() {
 				return
 			}
 			c.handleMessage(message)
+		}
+	}
+}
+
+func (c *BotEngine) localEventListener() {
+	c.wg.Add(1)
+	defer c.wg.Done()
+	for event := range c.eventChan {
+		select {
+		case <-c.closeChan:
+			return
+		default:
+			reqCtx := genRequestContext(c, event)
+			switch e := event.(type) {
+			case onebot.PrivateMessageEvent:
+				// fmt.Printf("\n[私聊消息] 来自 %d(%s): %s\n", e.UserID, e.Sender.Nickname, e.RawMessage)
+				if handlerFunc, exists := c.handlerFunc[PrivateMessageEvent]; exists {
+					handlerFunc(context.Background(), reqCtx)
+				}
+			case onebot.GroupMessageEvent:
+				// fmt.Printf("\n[群聊消息] 群 %d, 用户 %d(%s): %s\n", e.GroupID, e.UserID, e.Sender.Nickname, e.RawMessage)
+				if handlerFunc, exists := c.handlerFunc[GroupMessageEvent]; exists {
+					handlerFunc(context.Background(), reqCtx)
+				}
+			case onebot.FriendAddNoticeEvent:
+				// fmt.Printf("\n[好友添加] 新好友: %d\n", e.UserID)
+				if handlerFunc, exists := c.handlerFunc[FriendAddEvent]; exists {
+					handlerFunc(context.Background(), reqCtx)
+				}
+			case onebot.GroupIncreaseNoticeEvent:
+				// fmt.Printf("\n[群成员增加] 群 %d, 新成员: %d\n", e.GroupID, e.UserID)
+				handlerFunc, exists := c.handlerFunc[GroupIncreaseEvent]
+				if exists {
+					handlerFunc(context.Background(), reqCtx)
+				}
+			case onebot.GroupDecreaseNoticeEvent:
+				if handlerFunc, exists := c.handlerFunc[GroupDecreaseEvent]; exists {
+					handlerFunc(context.Background(), reqCtx)
+				}
+			case onebot.HeartbeatMetaEvent:
+				fmt.Printf("\r[心跳] 在线: %v", e.Status.Online)
+			default:
+				fmt.Printf("\n[其他事件] %T\n", e)
+			}
 		}
 	}
 }
@@ -204,49 +250,7 @@ func (c *BotEngine) dispatchEvent(postType string, data []byte) {
 	}
 }
 
-func (c *BotEngine) eventListener() {
-	for event := range c.eventChan {
-		select {
-		case <-c.closeChan:
-			return
-		default:
-			switch e := event.(type) {
-			case onebot.PrivateMessageEvent:
-				// fmt.Printf("\n[私聊消息] 来自 %d(%s): %s\n", e.UserID, e.Sender.Nickname, e.RawMessage)
-				if handlerFunc, exists := c.handlerFunc[PrivateMessageEvent]; exists {
-					handlerFunc(context.Background(), c)
-				}
-			case onebot.GroupMessageEvent:
-				// fmt.Printf("\n[群聊消息] 群 %d, 用户 %d(%s): %s\n", e.GroupID, e.UserID, e.Sender.Nickname, e.RawMessage)
-				if handlerFunc, exists := c.handlerFunc[GroupMessageEvent]; exists {
-					handlerFunc(context.Background(), c)
-				}
-			case onebot.FriendAddNoticeEvent:
-				// fmt.Printf("\n[好友添加] 新好友: %d\n", e.UserID)
-				if handlerFunc, exists := c.handlerFunc[FriendAddEvent]; exists {
-					handlerFunc(context.Background(), c)
-				}
-			case onebot.GroupIncreaseNoticeEvent:
-				// fmt.Printf("\n[群成员增加] 群 %d, 新成员: %d\n", e.GroupID, e.UserID)
-				handlerFunc, exists := c.handlerFunc[GroupIncreaseEvent]
-				if exists {
-					handlerFunc(context.Background(), c)
-				}
-			case onebot.GroupDecreaseNoticeEvent:
-				// fmt.Printf("\n[群成员减少] 群 %d, 离开成员: %d\n", e.GroupID, e.UserID)
-				if handlerFunc, exists := c.handlerFunc[GroupDecreaseEvent]; exists {
-					handlerFunc(context.Background(), c)
-				}
-			case onebot.HeartbeatMetaEvent:
-				fmt.Printf("\r[心跳] 在线: %v", e.Status.Online)
-			default:
-				fmt.Printf("\n[其他事件] %T\n", e)
-			}
-		}
-	}
-}
-
-func (c *BotEngine) SendRequest(action string, params interface{}) (*onebot.APIResponse, error) {
+func (c *BotEngine) sendRequest(action string, params interface{}) (*onebot.APIResponse, error) {
 	c.mu.Lock()
 	if c.conn == nil {
 		c.mu.Unlock()

@@ -2,7 +2,11 @@ package botEngine
 
 import "XiaXiaoMan/core/models/onebot"
 
-func NewTextSegment(text string) onebot.MessageSegment {
+type MessageSegmentSet struct {
+	msg []onebot.MessageSegment
+}
+
+func (r *RequestContext) NewTextSegment(text string) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "text",
 		Data: map[string]interface{}{
@@ -11,7 +15,7 @@ func NewTextSegment(text string) onebot.MessageSegment {
 	}
 }
 
-func NewImageSegment(file string) onebot.MessageSegment {
+func (r *RequestContext) NewImageSegment(file string) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "image",
 		Data: map[string]interface{}{
@@ -20,7 +24,7 @@ func NewImageSegment(file string) onebot.MessageSegment {
 	}
 }
 
-func NewFaceSegment(id int) onebot.MessageSegment {
+func (r *RequestContext) NewFaceSegment(id int) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "face",
 		Data: map[string]interface{}{
@@ -29,7 +33,7 @@ func NewFaceSegment(id int) onebot.MessageSegment {
 	}
 }
 
-func NewAtSegment(userID int64) onebot.MessageSegment {
+func (r *RequestContext) NewAtSegment(userID int64) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "at",
 		Data: map[string]interface{}{
@@ -38,7 +42,7 @@ func NewAtSegment(userID int64) onebot.MessageSegment {
 	}
 }
 
-func NewRecordSegment(file string) onebot.MessageSegment {
+func (r *RequestContext) NewRecordSegment(file string) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "record",
 		Data: map[string]interface{}{
@@ -47,7 +51,7 @@ func NewRecordSegment(file string) onebot.MessageSegment {
 	}
 }
 
-func NewVideoSegment(file string) onebot.MessageSegment {
+func (r *RequestContext) NewVideoSegment(file string) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "video",
 		Data: map[string]interface{}{
@@ -56,7 +60,7 @@ func NewVideoSegment(file string) onebot.MessageSegment {
 	}
 }
 
-func NewFileSegment(file string) onebot.MessageSegment {
+func (r *RequestContext) NewFileSegment(file string) onebot.MessageSegment {
 	return onebot.MessageSegment{
 		Type: "file",
 		Data: map[string]interface{}{
@@ -65,7 +69,7 @@ func NewFileSegment(file string) onebot.MessageSegment {
 	}
 }
 
-func NewForwardNode(name string, uin int64, content interface{}) onebot.ForwardMessageNode {
+func (r *RequestContext) NewForwardNode(name string, uin int64, content interface{}) onebot.ForwardMessageNode {
 	return onebot.ForwardMessageNode{
 		Type: "node",
 		Data: map[string]interface{}{
@@ -74,4 +78,17 @@ func NewForwardNode(name string, uin int64, content interface{}) onebot.ForwardM
 			"content": content,
 		},
 	}
+}
+
+func (r *RequestContext) NewMessageSegmentSet() *MessageSegmentSet {
+	return &MessageSegmentSet{msg: make([]onebot.MessageSegment, 0)}
+}
+
+func (m *MessageSegmentSet) Add(item onebot.MessageSegment) *MessageSegmentSet {
+	m.msg = append(m.msg, item)
+	return m
+}
+
+func (m *MessageSegmentSet) Build() []onebot.MessageSegment {
+	return m.msg
 }
