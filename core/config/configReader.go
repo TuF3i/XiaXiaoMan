@@ -9,6 +9,9 @@ import (
 func setDefaultSettings(v *viper.Viper) {
 	v.SetDefault(XIAXIAOMAN_LLBOTCONFIG_URL, "")
 	v.SetDefault(XIAXIAOMAN_LLBOTCONFIG_TOKEN, "")
+	v.SetDefault(XIAXIAOMAN_LLMCHATCONFIG_ALIYUNAPIKEY, "")
+	v.SetDefault(XIAXIAOMAN_LLMCHATCONFIG_ALIYUNBASEURL, "https://dashscope.aliyuncs.com/compatible-mode/v1")
+	v.SetDefault(XIAXIAOMAN_LLMCHATCONFIG_CHATMODEL, "qwen-turbo")
 }
 
 func configLoader() (*Config, error) {
