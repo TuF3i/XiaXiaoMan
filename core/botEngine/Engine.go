@@ -133,12 +133,7 @@ func (c *BotEngine) dispatchEvent(postType string, data []byte) {
 	case "message":
 		var msgEvent onebot.MessageEvent
 		if err := json.Unmarshal(data, &msgEvent); err == nil {
-			if msgEvent.MessageType == "private" {
-				var privEvent onebot.PrivateMessageEvent
-				if json.Unmarshal(data, &privEvent) == nil {
-					event = privEvent
-				}
-			} else if msgEvent.MessageType == "group" {
+			if msgEvent.MessageType == "group" {
 				var groupEvent onebot.GroupMessageEvent
 				if json.Unmarshal(data, &groupEvent) == nil {
 					event = groupEvent
