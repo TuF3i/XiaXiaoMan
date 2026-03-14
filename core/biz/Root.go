@@ -5,7 +5,14 @@ import (
 	"context"
 )
 
-type builtInCommand interface {
+type BuiltInCommand interface {
+	GetName() string
+	GetDescription() string
+	GetCaller() string
+	GetHandlerFunc() func(ctx context.Context, c *botEngine.RequestContext)
+}
+
+type magicCommand interface {
 	GetName() string
 	GetDescription() string
 	GetCaller() string
@@ -20,4 +27,7 @@ type luaPlugin interface {
 }
 
 type Biz struct {
+	BuiltInCommand map[string]BuiltInCommand
+	MagicCommand   map[string]magicCommand
+	LuaPlugin      map[string]luaPlugin
 }

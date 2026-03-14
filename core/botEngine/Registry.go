@@ -11,10 +11,6 @@ func (r *RequestContext) GetRequestContext() interface{} {
 	return r.requestContext
 }
 
-func (r *RequestContext) GetPrivateMessageEvent() onebot.PrivateMessageEvent {
-	return r.requestContext.(onebot.PrivateMessageEvent)
-}
-
 func (r *RequestContext) GetGroupMessageEvent() onebot.GroupMessageEvent {
 	return r.requestContext.(onebot.GroupMessageEvent)
 }
